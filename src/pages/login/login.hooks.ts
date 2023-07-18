@@ -17,7 +17,6 @@ export const useLogin = () => {
           password: string;
       }) => {
     setLoading(true);
-    console.log(email, password);
     api
       .post('/api/v1/users/login', { email, password })
       .then((res) => {

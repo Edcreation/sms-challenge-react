@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import image from '../../assets/login-graphics.jpg';
 import { useLogin } from './login.hooks';
 
@@ -37,14 +38,14 @@ export default function Login() {
             <div className="w-11/12 text-[14px] text-red-500 mb-2">{error}</div>
             <label htmlFor="input-group-1" className="block w-11/12 mb-2 text-left text-[13px] font-medium text-gray-900 opacity-30">Username or Email</label>
             <div className="relative mb-3 flex justify-center items-center w-11/12">
-              <div className="absolute inset-y-0 text-md text-blue-500 left-0 flex items-center pl-3.5 pointer-events-none">
+              <div className="absolute inset-y-0 text-md text-regal-blue left-0 flex items-center pl-3.5 pointer-events-none">
                 <i className="fa opacity-80 fa-envelope" aria-hidden="true"></i>
               </div>
               <input type="email" name='email' id="input-group-1" className="bg-gray-50 border border-slate-300 text-gray-900 text-sm rounded-md block w-full pl-10 p-2.5 focus:outline-none" placeholder="email@ishema.com" required={true} />
             </div>
             <label htmlFor="input-group-2" className="block w-11/12 mb-2 text-left text-[13px] font-medium text-gray-900 opacity-30">Password</label>
             <div className="relative mb-6 flex justify-center items-center w-11/12">
-              <div className="absolute inset-y-0 text-lg text-blue-500 left-0 flex items-center pl-3.5 pointer-events-none">
+              <div className="absolute inset-y-0 text-lg text-regal-blue left-0 flex items-center pl-3.5 pointer-events-none">
                 <i className="fa opacity-80 fa-lock" aria-hidden="true"></i>
               </div>
               <input type="password" name='password' id="input-group-2" className="bg-gray-50 border border-slate-300 text-gray-900 text-sm rounded-md block w-full pl-10 p-2.5 focus:outline-none" required={true} />
@@ -56,13 +57,13 @@ export default function Login() {
                 </div>
                 <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900 ">Remember me</label>
               </div>
-              <div className="underline text-blue-500">
+              <div className="underline text-regal-blue">
                             Forgot Password?
               </div>
             </div>
             {loading ?
-              <button className="p-3 bg-blue-500 text-white min-w-[64px] rounded-md"><i className="fa fa-spinner fa-spin" aria-hidden="true"></i></button> :
-              <button className="p-3 bg-blue-500 text-white rounded-md">Login</button>
+              <button className="p-3 bg-regal-blue text-white min-w-[64px] rounded-md"><i className="fa fa-spinner fa-spin" aria-hidden="true"></i></button> :
+              <button className="p-3 bg-regal-blue text-white rounded-md">Login</button>
             }
           </form>
         </div>

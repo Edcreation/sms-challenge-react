@@ -1,7 +1,7 @@
 import Message_image from '../../../assets/sent.png';
 import Recipient_image from '../../../assets/recepient.png';
 import sent_image from '../../../assets/message balance.png';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useState, useEffect } from 'react';
 import { environment, useCreateEnvironment, useGetEnvironments } from './dashboard.hooks';
 import copy from 'clipboard-copy';
 
@@ -52,6 +52,13 @@ function UpperBoxes() {
 function EnvironmentHolder() {
   const [open , setOpen] = useState(false);
   const { loading, error, envs } = useGetEnvironments();
+  const [data, setData] = useState<environment[]>([]);
+  useEffect(() => {
+    envs ? setData(envs) : '';
+  }, [envs]);
+  const sortBy = (key: string) => {
+    key === '' ? setData(envs) : setData(envs.filter((item) => item.environment === key));
+  };
   return (
     <div className="w-full   mt-5 p-2">
       <div className="p-2 font-semibold flex flex-row justify-between items-center">
@@ -59,9 +66,16 @@ function EnvironmentHolder() {
         <button onClick={() => setOpen((prev) => !prev)} className="p-2 px-5 bg-regal-blue text-white rounded-md border">Create New</button>
         {open && <CreateEnv action={setOpen} />}
       </div>
+      <div className="w-full p-2 flex justify-end flex-row border-b-2">
+        <select onChange={(e) => sortBy(e.target.value)} className='focus:outline-none border border-slate-400 p-[5px] bg-slate-200'>
+          <option value="">All</option>
+          <option value="dev">Development</option>
+          <option value="prod">Production</option>
+        </select>
+      </div>
       <div className="max-h-[340px] py-4 flex flex-col overflow-y-scroll">
         { loading ? <p>Loading...</p> : error ? <p>{error}</p> : envs.length === 0 ? <p>No environments created.</p> :
-          envs.map((env) => <Environment secret={env.secret} name={env.name} description={env.description} environment={env.environment} />)
+          data.map((env) => <Environment secret={env.secret} name={env.name} description={env.description} environment={env.environment} />)
         }
       </div>
     </div>
@@ -69,7 +83,7 @@ function EnvironmentHolder() {
 }
 
 function CreateEnv({ action } : { action: React.Dispatch<SetStateAction<boolean>> }) {
-  const { loading, error, CreateEnvironment } = useCreateEnvironment();
+  const { loading, error, CreateEnvironment, success } = useCreateEnvironment();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (event: { preventDefault: () => void; target: any; }) => {
     event.preventDefault();
@@ -85,13 +99,14 @@ function CreateEnv({ action } : { action: React.Dispatch<SetStateAction<boolean>
       description: formValues.description
     } as environment);
   };
+  success ? (document.getElementById('frm') as HTMLFormElement )?.reset() : '';
   return (
     <div style={{ transition: '.6s' }} className="absolute w-full flex justify-center items-start pt-36 h-screen top-0 left-0 backdrop-blur-sm">
-      <form onSubmit={handleSubmit} className="w-11/12 md:w-2/5 scale-in-tr h-56">
+      <form id='frm' onSubmit={handleSubmit} className="w-11/12 md:w-2/5 scale-in-tr h-56">
         <div className="flex p-1 flex-row justify-end"><button onClick={() => action(false)} className='rounded-md text-2xl'><i className="fa fa-window-close" aria-hidden="true"></i></button></div>
         <div className="w-full shadow-lg bg-white border flex flex-col items-center">
           <h1 className='py-2'>Create new Environment</h1>
-          <p className='text-red-600 text-[12px] h-5'>{error}</p>
+          <p className={`${success ? 'text-green-600' : 'text-red-600'} text-[12px] h-5`}>{error}{success}</p>
           <div className="p-2 w-full flex flex-col justify-center items-center">
             <label htmlFor="name" className="text-sm w-11/12 text-start">Name</label>
             <input name='name' type="text" className="w-11/12 focus:outline-none p-2 border" />
@@ -125,13 +140,13 @@ function Environment({ name, description, environment, secret }: environment) {
       setCopied(true);
       setInterval(() => {
         setCopied(false);
-      }, 2000);
+      }, 400);
     });
   };
   return (
-    <div className="w-full  bg-white flex flex-wrap justify-between rounded-md shadow-md border p-1 mb-4">
+    <div className="w-full  bg-white flex flex-wrap justify-between rounded-md shadow-sm border p-1 mb-4">
       <div className="p-1">
-        <div className="flex flex-wrap items-center font-bold">{name} <div className={`ml-2 p-1 px-2 text-[13px] rounded-md ${environment === 'prod' ? 'bg-green-500' : 'bg-orange-400'}`}>{environment}</div></div>
+        <div className="flex flex-wrap items-center font-bold">{name} <div className={`ml-2 p-1 font-light text-[10px] rounded-md ${environment === 'prod' ? 'bg-green-500' : 'bg-orange-400'}`}>{environment.toUpperCase()}</div></div>
         <div className="text-[13px] my-2 max-h-[200px] overflow-x-scroll text-slate-400 max-w-[200px]">{description}</div>
       </div>
       <div className="p-1 text-sm flex justify-end">

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+
 import { useAppDispatch } from '../redux/redux/hooks';
 import { clearToken } from '../redux/redux/slices/tokenSlice';
 import store from '../redux/redux/store';
@@ -13,10 +13,9 @@ export const isLoggedIn = () => {
 
 export const useLogout = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const handleLogout = () => {
     dispatch(clearToken());
-    navigate('/login');
+    location.href = '/login';
   };
 
   return handleLogout;

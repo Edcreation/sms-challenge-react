@@ -192,28 +192,6 @@ function SendSearched() {
   );
 }
 
-// function SendFromFile() {
-//   return (
-//     <div className="w-full shadow-lg bg-white border flex flex-col items-center">
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Sender ID</label>
-//         <input type="text" className="w-11/12 focus:outline-none p-2 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Upload Excel File</label>
-//         <input type="file" className="w-11/12 focus:outline-none p-2 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
-//         <textarea className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-//       </div>
-//     </div>
-//   );
-// }
-
 function SendFromFile({ api, senderId } : { api: string, senderId: string | null }) {
   const [recepients, setRecipients] = useState([]);
   const [data, setData] = useState([]);

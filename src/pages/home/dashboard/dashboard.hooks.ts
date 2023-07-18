@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAppSelector } from '../../../redux/redux/hooks';
 import api from '../../../utils/axios.config';
-import { toast } from 'react-toastify';
 
 export type environment = {
   name: string,
@@ -13,6 +12,7 @@ export type environment = {
 export const useCreateEnvironment = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const token = useAppSelector((state) => state.token.value);
   const CreateEnvironment = ({ name, environment, description } : environment) => {
     setLoading(true);
@@ -24,7 +24,10 @@ export const useCreateEnvironment = () => {
       })
       .then(() => {
         setLoading(false);
-        toast.success('Environment created.');
+        setSuccess('Environment created.');
+        setTimeout(() => {
+          setSuccess(null);
+        }, 5000);
       })
       .catch((err) => {
         setLoading(false);
@@ -37,7 +40,8 @@ export const useCreateEnvironment = () => {
   return {
     loading,
     error,
-    CreateEnvironment
+    CreateEnvironment,
+    success
   };
 };
 
@@ -54,17 +58,35 @@ export const useGetEnvironments = () => {
           Authorization: `Bearer ${token}`
         }
       })
-      .then((res) => {
+      .then(() => {
         setLoading(false);
-        setEnvs(res.data);
-        // setEnvs([
-        //   {
-        //     secret: 'BPA6c163YOYVXaKTS5JLbJ8EDQZ6PR',
-        //     environment: 'prod',
-        //     name: 'demo env' ,
-        //     description: 'testing environment' ,
-        //   }
-        // ] as environment[]);
+        // setEnvs(res.data);
+        setEnvs([
+          {
+            secret: 'BPA6c163YOYVXaKTS5JLbJ8EDQZ6PR',
+            environment: 'dev',
+            name: 'demo env' ,
+            description: 'testing environment' ,
+          },
+          {
+            secret: 'BPA6c163YOYVXaKTS5JLbJ8EDQZ6PR',
+            environment: 'prod',
+            name: 'demo env' ,
+            description: 'testing environment' ,
+          },
+          {
+            secret: 'BPA6c163YOYVXaKTS5JLbJ8EDQZ6PR',
+            environment: 'dev',
+            name: 'demo env' ,
+            description: 'testing environment' ,
+          },
+          {
+            secret: 'BPA6c163YOYVXaKTS5JLbJ8EDQZ6PR',
+            environment: 'prod',
+            name: 'demo env' ,
+            description: 'testing environment' ,
+          }
+        ] as environment[]);
       })
       .catch((err) => {
         setLoading(false);

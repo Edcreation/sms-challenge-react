@@ -10,7 +10,6 @@ import Profile from './profile/Profile';
 import { useProfile } from './profile/profile.hooks';
 import NotFound from '../others/404';
 import { useLogout } from '../../utils/isLoggedIn';
-import { useDetectClickOutside } from 'react-detect-click-outside';
 import { DarkButton } from '../../utils/darkmode';
 
 // CALL IT ONCE IN YOUR APP
@@ -18,10 +17,9 @@ injectStyle();
 
 export default function Home() {
   const [open, setOpen] = useState(false);
-  const ref = useDetectClickOutside({ onTriggered: () => setOpen(false) });
   return (
     <div className="flex flex-row bg-slate-100">
-      <Sidebar pef={ref} view={open ? 'left-0' : '-left-56'} action={setOpen} />
+      <Sidebar view={open ? 'left-0' : '-left-56'} action={setOpen} />
       <div className="w-full overflow-hidden h-screen" style={{ transition: '.6s' }}>
         <Navbar action={setOpen} />
         <div className="p-1 md:p-5 h-screen overflow-scroll">
@@ -42,11 +40,11 @@ function Navbar({ action } : { action: React.Dispatch<React.SetStateAction<boole
   const [open, setOpen] = useState(false);
   const logout = useLogout();
   const { loading, profile } = useProfile();
-  const ref = useDetectClickOutside({ onTriggered: () => setOpen(false) });
+  // const ref = useDetectClickOutside({ onTriggered: () => setOpen(false) });
   const [full, setFull] = useState(false);
   full ? document.documentElement.requestFullscreen() : '';
   return (
-    <div ref={ref} className="w-full z-50 px-2 md:px-5 py-2 flex justify-between md:justify-end items-center flex-row bg-slate-50 shadow-lg border-b">
+    <div className="w-full z-50 px-2 md:px-5 py-2 flex justify-between md:justify-end items-center flex-row bg-slate-50 shadow-lg border-b">
       <button onClick={() => action((prev) => !prev)} className="md:hidden mx-2 cursor-pointer">
         <i className="fa fa-bars text-xl font-light" aria-hidden="true"></i>
       </button>
@@ -76,10 +74,9 @@ function Navbar({ action } : { action: React.Dispatch<React.SetStateAction<boole
   );
 }
 
-function Sidebar({ view, action, pef } : { pef: React.LegacyRef<HTMLDivElement>,view: string, action: React.Dispatch<React.SetStateAction<boolean>> }) {
+function Sidebar({ view, action } : { view: string, action: React.Dispatch<React.SetStateAction<boolean>> }) {
   return (
     <div
-      ref={pef}
       className={`${view} md:left-0 fixed md:relative md:flex flex transition-all slide-in-left justify-between flex-col w-80 max-w-[200px] text-white h-screen bg-regal-blue`}>
       <div className="">
         <div className="h-[57px] md:h-[66px] bg-slate-50 border-slate-700 pb-[2px] w-full flex flex-row justify-between items-center">
@@ -103,7 +100,7 @@ function Sidebar({ view, action, pef } : { pef: React.LegacyRef<HTMLDivElement>,
             </div>
               Profile
           </Link>
-          <Recipient />
+          {/* <Recipient /> */}
           <Messages />
 
         </div>
@@ -112,24 +109,24 @@ function Sidebar({ view, action, pef } : { pef: React.LegacyRef<HTMLDivElement>,
   );
 }
 
-function Recipient() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className='mb-3'>
-      <div onClick={() => setOpen((prev) => !prev)} className="p-2  flex flex-row- justify-between items-center transition-all hover:translate-x- hover:translate-y-1 hover:border rounded-md overflow-hidden border-slate-700 cursor-pointer ">
-        <div className="">
-          <i className="fa fa-users pr-2" aria-hidden="true"></i>
-            Recipients
-        </div>
-        <div className={`${open ? '' : 'rotate-90'} transition-all`}><i className="fa fa-caret-right" aria-hidden="true"></i></div>
-      </div>
-      <div className={`${open ? 'hidden' : ''} transition-opacity flex flex-col px-2 pt-1 pl-5 mb-3`}>
-        <Link to="/home/recepients" className="p-2 w-full pr-20 hover:translate-x-2 transition-all mb-1 hover:border border-slate-700 cursor-pointer rounded-md">List All</Link>
-        <Link to="/home/create-recepients" className="p-2 w-full pr-20 hover:translate-x-2 transition-all mb-1 hover:border border-slate-700 cursor-pointer rounded-md">Create</Link>
-      </div>
-    </div>
-  );
-}
+// function Recipient() {
+//   const [open, setOpen] = useState(false);
+//   return (
+//     <div className='mb-3'>
+//       <div onClick={() => setOpen((prev) => !prev)} className="p-2  flex flex-row- justify-between items-center transition-all hover:translate-x- hover:translate-y-1 hover:border rounded-md overflow-hidden border-slate-700 cursor-pointer ">
+//         <div className="">
+//           <i className="fa fa-users pr-2" aria-hidden="true"></i>
+//             Recipients
+//         </div>
+//         <div className={`${open ? '' : 'rotate-90'} transition-all`}><i className="fa fa-caret-right" aria-hidden="true"></i></div>
+//       </div>
+//       <div className={`${open ? 'hidden' : ''} transition-opacity flex flex-col px-2 pt-1 pl-5 mb-3`}>
+//         <Link to="/home/recepients" className="p-2 w-full pr-20 hover:translate-x-2 transition-all mb-1 hover:border border-slate-700 cursor-pointer rounded-md">List All</Link>
+//         <Link to="/home/create-recepients" className="p-2 w-full pr-20 hover:translate-x-2 transition-all mb-1 hover:border border-slate-700 cursor-pointer rounded-md">Create</Link>
+//       </div>
+//     </div>
+//   );
+// }
 
 function Messages() {
   const [open, setOpen] = useState(false);
@@ -143,7 +140,7 @@ function Messages() {
         <div className={`${open ? '' : 'rotate-90'} transition-all`}><i className="fa fa-caret-right" aria-hidden="true"></i></div>
       </div>
       <div className={`${open ? 'hidden' : ''} transition-opacity flex flex-col px-2 pt-1 pl-5 mb-3`}>
-        <Link to="/home/recepients" className="p-2 w-full pr-20 hover:translate-x-2 transition-all mb-1 hover:border border-slate-700 cursor-pointer rounded-md">Reports</Link>
+        {/* <Link to="/home/recepients" className="p-2 w-full pr-20 hover:translate-x-2 transition-all mb-1 hover:border border-slate-700 cursor-pointer rounded-md">Reports</Link> */}
         <Link to="/home/send-message" className="p-2 w-full pr-20 hover:translate-x-2 transition-all mb-1 hover:border border-slate-700 cursor-pointer rounded-md">Send</Link>
       </div>
     </div>

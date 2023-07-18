@@ -7,11 +7,11 @@ function Profile() {
   return (
     <div className="w-full flex justify-center items-center">
       { loading ? <ProfileSkeleton /> : error ? <p>{error}</p> :
-        <div className="w-11/12 mt-20 bg-slate-200 max-w-[600px] border shadow-md flex flex-col justify-between items-center">
+        <div className="w-11/12 mt-10 bg-slate-200 max-w-[600px] border shadow-md flex flex-col justify-between items-center">
           <div className="p-5">
             <div className="rounded-full h-20 w-20 bg-black flex justify-center items-center text-white text-[40px] border">{profile?.lastName.split('')[0].toUpperCase()}</div>
           </div>
-          <div className="flex flex-col justify-between items-center pb-5">
+          <div className="flex  flex-col justify-between items-center pb-5">
             <p className="w-full text-start text-lg font-bold">{profile?.firstName} {profile?.lastName}</p>
             <p className="w-full text-start mb-5 text-sm">{profile?.email}</p>
             <div className="p-1 px-2 border rounded-md bg-orange-400 max-w-[100px] text-center">{profile?.role}</div>
