@@ -38,15 +38,15 @@ export default function SendMessages() {
         <div className="p-2 border-r w-full grid grid-cols-3 md:flex md:flex-col md:w-1/5">
           <button onClick={() => setActive(0)} className={`${active === 0 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send message</button>
           <button onClick={() => setActive(1)} className={`${active === 1 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send many</button>
-          <button onClick={() => setActive(2)} className={`${active === 2 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send to a group</button>
-          <button onClick={() => setActive(3)} className={`${active === 3 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send to registered</button>
+          {/* <button onClick={() => setActive(2)} className={`${active === 2 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send to a group</button>
+          <button onClick={() => setActive(3)} className={`${active === 3 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send to registered</button> */}
           <button onClick={() => setActive(4)} className={`${active === 4 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send from excel file</button>
         </div>
         <div className="w-full  md:w-4/5 p-2 flex justify-start items-center">
           {active === 0 && <SendOne api={textRef.current?.value || ''} senderId={defaultId} /> }
           {active === 1 && <SendMany api={textRef.current?.value || ''} senderId={defaultId} /> }
-          {active === 2 && <SendGroup /> }
-          {active === 3 && <SendSearched /> }
+          {/* {active === 2 && <SendGroup /> }
+          {active === 3 && <SendSearched /> } */}
           {active === 4 && <SendFromFile api={textRef.current?.value || ''} senderId={defaultId} /> }
         </div>
       </div>
@@ -145,52 +145,52 @@ function SendMany({ api, senderId } : { api: string, senderId: string | null }) 
 }
 
 
-function SendGroup() {
-  return (
-    <div className="w-full shadow-lg bg-white border flex flex-col items-center">
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Sender ID</label>
-        <input type="text" className="w-11/12 focus:outline-none p-2 border" />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Select Group</label>
-        <select className="w-11/12 focus:outline-none p-2 border">
-          <option className="py-3 text-white bg-regal-blue">Main</option>
-          <option className="p-3 text-white bg-regal-blue">Main</option>
-        </select>
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
-        <textarea className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-      </div>
-    </div>
-  );
-}
+// function SendGroup() {
+//   return (
+//     <div className="w-full shadow-lg bg-white border flex flex-col items-center">
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <label htmlFor="" className="text-sm w-11/12 text-start">Sender ID</label>
+//         <input type="text" className="w-11/12 focus:outline-none p-2 border" />
+//       </div>
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <label htmlFor="" className="text-sm w-11/12 text-start">Select Group</label>
+//         <select className="w-11/12 focus:outline-none p-2 border">
+//           <option className="py-3 text-white bg-regal-blue">Main</option>
+//           <option className="p-3 text-white bg-regal-blue">Main</option>
+//         </select>
+//       </div>
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
+//         <textarea className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
+//       </div>
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
+//       </div>
+//     </div>
+//   );
+// }
 
-function SendSearched() {
-  return (
-    <div className="w-full shadow-lg bg-white border flex flex-col items-center">
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Sender ID</label>
-        <input type="text" className="w-11/12 focus:outline-none p-2 border" />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Search Recepient</label>
-        <input type="search" className="w-11/12 focus:outline-none p-2 border" />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
-        <textarea className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-      </div>
-    </div>
-  );
-}
+// function SendSearched() {
+//   return (
+//     <div className="w-full shadow-lg bg-white border flex flex-col items-center">
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <label htmlFor="" className="text-sm w-11/12 text-start">Sender ID</label>
+//         <input type="text" className="w-11/12 focus:outline-none p-2 border" />
+//       </div>
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <label htmlFor="" className="text-sm w-11/12 text-start">Search Recepient</label>
+//         <input type="search" className="w-11/12 focus:outline-none p-2 border" />
+//       </div>
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
+//         <textarea className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
+//       </div>
+//       <div className="p-2 w-full flex flex-col justify-center items-center">
+//         <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
+//       </div>
+//     </div>
+//   );
+// }
 
 function SendFromFile({ api, senderId } : { api: string, senderId: string | null }) {
   const [recepients, setRecipients] = useState([]);
