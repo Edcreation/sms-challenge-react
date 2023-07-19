@@ -10,6 +10,14 @@ export type Recepient = {
     createdAt: string,
 }
 
+export type Groups = {
+  index: string,
+  name: string,
+  description: string,
+  recipients: string,
+  createdAt: string,
+}
+
 export const useRecepients = () => {
   const token = useAppSelector((state) => state.token.value);
   const [loading, setLoading] = useState(false);

@@ -3,6 +3,7 @@ import { useAppSelector } from '../../../redux/redux/hooks';
 import api from '../../../utils/axios.config';
 
 export type environment = {
+  index: number,
   name: string,
   environment: string,
   description: string,

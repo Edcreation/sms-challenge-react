@@ -16,8 +16,7 @@ export function DarkButton() {
   }, [dark]);
   return (
     <div className="flex flex-row justify-end items-end">
-        Dark mode
-      <label className="relative ml-6 inline-flex items-center mr-5 cursor-pointer">
+      <label className="relative mx-3 inline-flex items-center cursor-pointer">
         <input
           onClick={() => {
             setDark((prev) => prev === 'false' ? 'true' : 'false');
@@ -28,7 +27,7 @@ export function DarkButton() {
           value=""
           className="sr-only bg-regal-blue peer"
         />
-        <div className="w-11 h-6 bg-regal-blue rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-regal-blue after:content-[''] after:absolute  after:mt-[1.5px] after:ml-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange"></div>
+        <div className="w-7 h-4 bg-regal-blue rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-regal-blue after:content-[''] after:absolute  after:mt-[1.5px] after:ml-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-regal-blue peer-checked:border"></div>
       </label>
     </div>
   );

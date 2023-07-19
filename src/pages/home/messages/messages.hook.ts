@@ -16,6 +16,7 @@ export const useSendMessage = () => {
   const token = useAppSelector((state) => state.token.value);
   const SendMessage = ({ senderId, recepients, message, apiKey } : message) => {
     setLoading(true);
+    console.log(senderId, recepients, message, apiKey);
     api
       .post('/api/v1/notifications/send-sms', { senderId, recipients: recepients, message }, {
         headers: {

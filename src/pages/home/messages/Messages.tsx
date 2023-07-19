@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent, useRef, useState } from 'react';
 import { message, useSendMessage } from './messages.hook';
+import { Route, Routes } from 'react-router-dom';
 
 export default function SendMessages() {
-  const [active, setActive] = useState<0 | 1 | 2 | 3 | 4>(0);
   const textRef = useRef<HTMLInputElement>(null);
   const [defaultId, setDefaultId] = useState<string | null>(null);
   const handlePaste = async() => {
@@ -17,39 +17,44 @@ export default function SendMessages() {
     }
   };
   return (
-    <div className="p-2 pt-0">
-      <div className="flex w-full max-w-[800px] flex-wrap justify-between items-center p-2">
+    <div className=" pb-20 ">
+      <div className="flex w-full border-slate-300  p-2 mb-5 flex-wrap justify-between items-center">
         <p className="my-3 text-lg">Send Message</p>
-        <div className=" flex flex-wrap text-[12px] justify-between border border-slate-300 bg-slate-200 p-1 rounded items-end">
+        <div className="p-2 flex flex-wrap text-[12px] justify-between border  rounded items-end">
           <div className="">
             <label htmlFor="senderid" className=''>Default Sender ID</label>
-            <input onChange={(e) => setDefaultId(e.target.value)} type="text" className='focus:outline-none md:m-2 m-1 p-2 border-b border-slate-600  bg-transparent' name="senderid" id="senderid" />
+            <input onChange={(e) => setDefaultId(e.target.value)} type="text" className='focus:outline-none md:m-2 m-1 p-2 border-b border-slate-600   bg-transparent' name="senderid" id="senderid" />
           </div>
-          <div className="flex flex-col">
+          <div className="flex-col">
             <label htmlFor="apikey" className=''>Api Key</label>
-            <div className="border border-slate-300 flex flex-row items-center">
-              <input ref={textRef} contentEditable={true} type="password" className='focus:outline-none border-b border-slate-200 md:m-2 m-1  bg-transparent' name="apikey" id="apikey" />
+            <div className=" flex flex-row items-center">
+              <input ref={textRef} contentEditable={true} type="password" className='focus:outline-none border-b border-slate-600 md:m-2 m-1  bg-transparent' name="apikey" id="apikey" />
               <button onClick={handlePaste} className='p-2 bg-slate-300 border-l border-slate-300'><i className="fa fa-clipboard" aria-hidden="true"></i></button>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full max-w-[800px] flex flex-col md:flex-row md:justify-center">
-        <div className="p-2 border-r w-full grid grid-cols-3 md:flex md:flex-col md:w-1/5">
-          <button onClick={() => setActive(0)} className={`${active === 0 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send message</button>
-          <button onClick={() => setActive(1)} className={`${active === 1 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send many</button>
-          {/* <button onClick={() => setActive(2)} className={`${active === 2 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send to a group</button>
-          <button onClick={() => setActive(3)} className={`${active === 3 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send to registered</button> */}
-          <button onClick={() => setActive(4)} className={`${active === 4 ? ' md:translate-x-1 bg-blue-600' : 'bg-regal-blue'} p-1 cursor-pointer border hover:translate-x-1 hover:bg-blue-400 transition-all py-2 w-11/12 mb-1  text-white rounded-md shadow-md text-sm`}>Send from excel file</button>
-        </div>
-        <div className="w-full  md:w-4/5 p-2 flex justify-start items-center">
-          {active === 0 && <SendOne api={textRef.current?.value || ''} senderId={defaultId} /> }
-          {active === 1 && <SendMany api={textRef.current?.value || ''} senderId={defaultId} /> }
-          {/* {active === 2 && <SendGroup /> }
-          {active === 3 && <SendSearched /> } */}
-          {active === 4 && <SendFromFile api={textRef.current?.value || ''} senderId={defaultId} /> }
-        </div>
+      <div className="w-full flex flex-col md:flex-row md:justify-center">
+        <Routes>
+          <Route path='/' element={<Combination api={textRef.current?.value || ''} senderId={defaultId} />}></Route>
+          <Route path='/one' element={<SendOne api={textRef.current?.value || ''} senderId={defaultId} />}></Route>
+          <Route path='/many' element={<SendMany api={textRef.current?.value || ''} senderId={defaultId} />}></Route>
+          <Route path='/file' element={<SendFromFile api={textRef.current?.value || ''} senderId={defaultId} />}></Route>
+          <Route path='/group' element={<SendGroup api={textRef.current?.value || ''} senderId={defaultId} />}></Route>
+          <Route path='/recipient' element={<SendRecipient api={textRef.current?.value || ''} senderId={defaultId} />}></Route>
+        </Routes>
       </div>
+    </div>
+  );
+}
+
+function Combination({ api, senderId } : { api: string, senderId: string | null }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 place-content-center  gap-3 w-full">
+      <SendOne api={api} senderId={senderId} />
+      <SendMany api={api} senderId={senderId} />
+      <SendFromFile api={api} senderId={senderId} />
+      <SendGroup api={api} senderId={senderId} />
     </div>
   );
 }
@@ -74,28 +79,66 @@ function SendOne({ api, senderId } : { api: string, senderId: string | null }) {
     } as message);
   };
   return (
-    <form onSubmit={handleSubmit} className="w-full overflow-hidden shadow-lg bg-white border flex flex-col items-center" >
-      { error ? <div className="bg-red-600 text-white max-w-[200px] absolute p-2 rounded-b-md slide-in-top">{error}</div> : '' }
-      { success ? <div className="bg-green-600 text-white max-w-[200px] absolute p-2 rounded-b-md slide-in-top">{success}</div> : '' }
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="senderId" className="text-sm w-11/12 text-start">Sender ID</label>
-        <input value={id} onChange={(e) => setId(e.target.value)} name='senderId' type="text" className="w-11/12 focus:outline-none p-2 border" required={true} />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="recipients" className="text-sm w-11/12 text-start">Phone Number <span className="text-[12px] text-red-600">(2507xxxxxxxx)</span> </label>
-        <input name='recepients' type="text" className="w-11/12 focus:outline-none p-2 border" required={true} />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="message" className="text-sm w-11/12 text-start">Message</label>
-        <textarea name='message' className="w-11/12 focus:outline-none p-2 h-44 border" required={true} />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        {loading ?
-          <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">Loading...</button> :
-          <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-        }
-      </div>
-    </form>
+    <div className="p-5 border shadow-lg w-full max-w-[600px] max-h-[500px] bg-white">
+      <div className="border-b pb-2 mb-2">Send Message</div>
+      { error ? <div className="text-red-600 mx-1 mb-3 w-full">{error}</div> : '' }
+      { success ? <div className="text-green-600 mx-1 mb-3 w-full">{success}</div> : '' }
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5 flex flex-col gap-5 sm:flex-row">
+          <div className="w-full sm:w-1/2">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="senderId"> Sender Id </label>
+            <input
+              className="w-full border rounded bg-gray p-2 text-black focus:outline-none"
+              type="text"
+              name="senderId"
+              id="senderId"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+            />
+          </div>
+          <div className="w-full sm:w-1/2">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="recipients">
+              Phone number
+            </label>
+            <input
+              className="w-full border rounded bg-gray p-2 text-black focus:outline-none"
+              type="text"
+              name="recepients"
+              id="recipients"
+              placeholder='ex. (2507xxxxxxxx)'
+            />
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-col md:gap-5 sm:flex-row">
+          <div className="w-full">
+            <label
+              className="mb-3 block text-sm font-medium text-black "
+              htmlFor="message"
+            >
+            Message
+            </label>
+            <textarea
+              className="w-full border rounded bg-gray  p-2 h-auto max-h-[200px] text-black focus:outline-none"
+              name="message"
+              id="message"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end gap-4">
+          <button className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1  " type="submit" >
+              Cancel
+          </button>
+          {loading ?
+            <button className="flex justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Sending...
+            </button> :
+            <button className="flex transition-all justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Send
+            </button>}
+        </div>
+      </form>
+    </div>
   );
 }
 
@@ -119,78 +162,210 @@ function SendMany({ api, senderId } : { api: string, senderId: string | null }) 
     } as message);
   };
   return (
-    <form onSubmit={handleSubmit} className="w-full overflow-hidden shadow-lg bg-white border flex flex-col items-center" >
-      { error ? <div className="bg-red-600 text-white max-w-[200px] absolute p-2 rounded-b-md slide-in-top">{error}</div> : '' }
-      { success ? <div className="bg-green-600 text-white max-w-[200px] absolute p-2 rounded-b-md slide-in-top">{success}</div> : '' }
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="senderId" className="text-sm w-11/12 text-start">Sender ID</label>
-        <input value={id} onChange={(e) => setId(e.target.value)} name='senderId' type="text" className="w-11/12 focus:outline-none p-2 border" required={true} />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Phone Numbers <span className="text-[12px] text-red-600">(Separate each number with ",")</span> </label>
-        <textarea name='recepients' className="w-11/12 focus:outline-none p-2 border max-h-[100px]" required={true} />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="message" className="text-sm w-11/12 text-start">Message</label>
-        <textarea name='message' className="w-11/12 focus:outline-none p-2 h-44 border" required={true} />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        {loading ?
-          <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">Loading...</button> :
-          <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-        }
-      </div>
-    </form>
+    <div className="p-5 border shadow-lg w-full max-w-[600px] bg-white">
+      <div className="border-b pb-2 mb-2">Send message to many</div>
+      { error ? <div className="text-red-600 mx-1 mb-3 w-full">{error}</div> : '' }
+      { success ? <div className="text-green-600 mx-1 mb-3 w-full">{success}</div> : '' }
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5 flex flex-col gap-5 sm:flex-col">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="senderId"> Sender Id </label>
+            <input
+              className="w-full border rounded bg-gray p-2 text-black focus:outline-none"
+              type="text"
+              name="senderId"
+              id="senderId"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              placeholder="ex. John Doe"
+            />
+          </div>
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="recipients">
+              Phone numbers
+            </label>
+            <textarea className="w-full border max-h-[100px] rounded bg-gray p-2  text-black focus:outline-none"
+              name="recepients"
+              id="recipients"
+              placeholder='ex.2507xxxxxxxx, 2507xxxxxxxx'
+            />
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-col md:gap-5 sm:flex-row">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="message" > Message </label>
+            <textarea className="w-full border rounded bg-gray max-h-[200px] p-2 h-56 text-black focus:outline-none" name="message" id="message" />
+          </div>
+        </div>
+        <div className="flex justify-end gap-4">
+          <button className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1  " type="submit" >
+              Cancel
+          </button>
+          {loading ?
+            <button className="flex justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Sending...
+            </button> :
+            <button className="flex transition-all justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Send
+            </button>}
+        </div>
+      </form>
+    </div>
   );
 }
 
+function SendGroup({ api, senderId } : { api: string, senderId: string | null }) {
+  const { loading, SendMessage, error, success } = useSendMessage();
+  const [id, setId] = useState(senderId || '');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmit = (event: { preventDefault: () => void; target: any; }) => {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const data = new FormData(form);
+    const formValues: { [name: string]: string } = {};
+    for (const [name, value] of data.entries()) {
+      formValues[name] = value as string;
+    }
+    SendMessage({
+      senderId: formValues.senderId,
+      message: formValues.message,
+      recepients: [formValues.recepients],
+      apiKey: api
+    } as message);
+  };
+  return (
+    <div className="p-5 border shadow-lg w-full max-w-[600px] bg-white">
+      <div className="border-b pb-2 mb-2">Send message to group</div>
+      { error ? <div className="text-red-600 mx-1 mb-3 w-full">{error}</div> : '' }
+      { success ? <div className="text-green-600 mx-1 mb-3 w-full">{success}</div> : '' }
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5 flex flex-col gap-5 sm:flex-col">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="senderId"> Sender Id </label>
+            <input
+              className="w-full border rounded bg-gray p-2 text-black focus:outline-none"
+              type="text"
+              name="senderId"
+              id="senderId"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              placeholder="ex. John Doe"
+            />
+          </div>
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="recipients">
+              Select Group
+            </label>
+            <select className="w-full border max-h-[100px] rounded bg-gray p-2  text-black focus:outline-none"
+              name="recipients"
+              id="recipients"
+            >
+              <option value="">Group One</option>
+              <option value="">Group Two</option>
+            </select>
+          </div>
+        </div>
 
-// function SendGroup() {
-//   return (
-//     <div className="w-full shadow-lg bg-white border flex flex-col items-center">
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Sender ID</label>
-//         <input type="text" className="w-11/12 focus:outline-none p-2 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Select Group</label>
-//         <select className="w-11/12 focus:outline-none p-2 border">
-//           <option className="py-3 text-white bg-regal-blue">Main</option>
-//           <option className="p-3 text-white bg-regal-blue">Main</option>
-//         </select>
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
-//         <textarea className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-//       </div>
-//     </div>
-//   );
-// }
+        <div className="mb-5 flex flex-col md:gap-5 sm:flex-row">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="message" > Message </label>
+            <textarea className="w-full border rounded bg-gray max-h-[200px] p-2 h-56 text-black focus:outline-none" name="message" id="message" />
+          </div>
+        </div>
+        <div className="flex justify-end gap-4">
+          <button className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1  " type="submit" >
+              Cancel
+          </button>
+          {loading ?
+            <button className="flex justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Sending...
+            </button> :
+            <button className="flex transition-all justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Send
+            </button>}
+        </div>
+      </form>
+    </div>
+  );
+}
 
-// function SendSearched() {
-//   return (
-//     <div className="w-full shadow-lg bg-white border flex flex-col items-center">
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Sender ID</label>
-//         <input type="text" className="w-11/12 focus:outline-none p-2 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Search Recepient</label>
-//         <input type="search" className="w-11/12 focus:outline-none p-2 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
-//         <textarea className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
-//       </div>
-//       <div className="p-2 w-full flex flex-col justify-center items-center">
-//         <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-//       </div>
-//     </div>
-//   );
-// }
+function SendRecipient({ api, senderId } : { api: string, senderId: string | null }) {
+  const { loading, SendMessage, error, success } = useSendMessage();
+  const [id, setId] = useState(senderId || '');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmit = (event: { preventDefault: () => void; target: any; }) => {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const data = new FormData(form);
+    const formValues: { [name: string]: string } = {};
+    for (const [name, value] of data.entries()) {
+      formValues[name] = value as string;
+    }
+    SendMessage({
+      senderId: formValues.senderId,
+      message: formValues.message,
+      recepients: [formValues.recepients],
+      apiKey: api
+    } as message);
+  };
+  return (
+    <div className="p-5 border shadow-lg w-full max-w-[600px] bg-white">
+      <div className="border-b pb-2 mb-2">Send message to a Recipient</div>
+      { error ? <div className="text-red-600 mx-1 mb-3 w-full">{error}</div> : '' }
+      { success ? <div className="text-green-600 mx-1 mb-3 w-full">{success}</div> : '' }
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5 flex flex-col gap-5 sm:flex-col">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="senderId"> Sender Id </label>
+            <input
+              className="w-full border rounded bg-gray p-2 text-black focus:outline-none"
+              type="text"
+              name="senderId"
+              id="senderId"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              placeholder="ex. John Doe"
+            />
+          </div>
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="recipients">
+              Search Recipient
+            </label>
+            <div className="w-full bg-gray flex border flex-row rounded p-2">
+              <div className="p-1">
+                <i className="fa fa-search mr-3" aria-hidden="true"></i>
+              </div>
+              <input className="w-full  max-h-[100px] bg-transparent text-black focus:outline-none"
+                id="recipients"
+                type='search'
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-col md:gap-5 sm:flex-row">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="message" > Message </label>
+            <textarea className="w-full border rounded bg-gray max-h-[200px] p-2 h-56 text-black focus:outline-none" name="message" id="message" />
+          </div>
+        </div>
+        <div className="flex justify-end gap-4">
+          <button className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1  " type="submit" >
+              Cancel
+          </button>
+          {loading ?
+            <button className="flex justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Sending...
+            </button> :
+            <button className="flex transition-all justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Send
+            </button>}
+        </div>
+      </form>
+    </div>
+  );
+}
 
 function SendFromFile({ api, senderId } : { api: string, senderId: string | null }) {
   const [recepients, setRecipients] = useState([]);
@@ -259,29 +434,53 @@ function SendFromFile({ api, senderId } : { api: string, senderId: string | null
     } as message);
   };
   return (
-    <form onSubmit={handleSubmit} className="w-full shadow-lg bg-white border flex flex-col items-center">
-      { error ? <div className="bg-red-600 text-white max-w-[200px] absolute p-2 rounded-b-md slide-in-top">{error}</div> : '' }
-      { success ? <div className="bg-green-600 text-white max-w-[200px] absolute p-2 rounded-b-md slide-in-top">{success}</div> : '' }
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="senderId" className="text-sm w-11/12 text-start">Sender ID</label>
-        <input value={id} onChange={(e) => setId(e.target.value)} name='senderId' type="text" className="w-11/12 focus:outline-none p-2 border" required={true} />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Upload Excel File</label>
-        <input type="file" accept=".xlsx" onChange={handleFileChange} className="w-11/12 focus:outline-none p-2 border" />
-        {recepients.length !== 0 && <div className='w-11/12 border max-h-[80px] bg-slate-200 mt-1 overflow-scroll'><MiniTable details={data} /></div> }
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        <label htmlFor="" className="text-sm w-11/12 text-start">Message</label>
-        <textarea name='message' className="w-11/12 max-h-[180px] focus:outline-none p-2 h-44 border" />
-      </div>
-      <div className="p-2 w-full flex flex-col justify-center items-center">
-        {loading ?
-          <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">Loading...</button> :
-          <button className="w-11/12 focus:outline-none bg-regal-blue p-1 text-white border rounded-sm overflow-hidden shadow-sm">SEND</button>
-        }
-      </div>
-    </form>
+    <div className="p-5 border shadow-lg w-full max-w-[600px] bg-white">
+      <div className="border-b pb-2 mb-2">Send message from excel file</div>
+      { error ? <div className="text-red-600 mx-1 mb-3 w-full">{error}</div> : '' }
+      { success ? <div className="text-green-600 mx-1 mb-3 w-full">{success}</div> : '' }
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5 flex flex-col gap-5 sm:flex-col">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="senderId"> Sender Id </label>
+            <input
+              className="w-full border rounded bg-gray p-2 text-black focus:outline-none"
+              type="text"
+              name="senderId"
+              id="senderId"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              placeholder="ex. John Doe"
+            />
+          </div>
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="recipients">
+              Excel File
+            </label>
+            <input type="file" accept=".xlsx" onChange={handleFileChange} className="w-full focus:outline-none p-2 border" />
+            {recepients.length !== 0 && <div className='w-full border max-h-[150px] bg-slate-200 mt-1 overflow-scroll'><MiniTable details={data} /></div> }
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-col md:gap-5 sm:flex-row">
+          <div className="w-full">
+            <label className="mb-3 block text-sm font-medium text-black " htmlFor="message" > Message </label>
+            <textarea className="w-full border rounded bg-gray max-h-[200px] p-2 h-56 text-black focus:outline-none" name="message" id="message" />
+          </div>
+        </div>
+        <div className="flex justify-end gap-4">
+          <button className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1  " type="submit" >
+              Cancel
+          </button>
+          {loading ?
+            <button className="flex justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Sending...
+            </button> :
+            <button className="flex transition-all justify-center rounded bg-blue-600 py-2 px-6 font-medium text-white hover:shadow-lg" type="submit" >
+              Send
+            </button>}
+        </div>
+      </form>
+    </div>
   );
 }
 
@@ -302,7 +501,7 @@ function MiniTable({ details } : { details: { name: string, phone: string }[] })
   return (
     <table className="w-full text-sm text-left text-gray-500 ">
       <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-        <tr>
+        <tr className='bg-regal-blue text-white'>
           <th scope="col" className="px-6 py-3">
                 Name
           </th>

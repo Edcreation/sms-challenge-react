@@ -1,12 +1,12 @@
-import { Recepient } from './recepients.hooks';
+import { Groups } from './recepients.hooks';
 
-export default function ListRecepients() {
+export default function ListRecipients() {
   return (
     <div className='p-2'>
 
-      <div className=" overflow-x-auto border shadow-lg mb-20">
+      <div className=" overflow-x-auto border shadow-lg  mb-20">
         <div className="pb-4 flex flex-row bg-white border-b-2 justify-between shadow-md p-3 items-center">
-          <div className="text-xl font-semibold">Recipients</div>
+          <div className="text-xl font-semibold">Recipient Groups</div>
           <div className="flex flex-row items-center justify-center">
             <button className="p-1 px-2 mt-1 rounded-md mr-3 bg-slate-100 border"><i className="fa fa-filter" aria-hidden="true"></i></button>
             <div className=" mt-1">
@@ -16,7 +16,7 @@ export default function ListRecepients() {
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z-index"/>
                   </svg>
                 </div>
-                <input type="text" id="table-search" className="block p-2 text-sm text-gray-900  w-full  focus:outline-none" placeholder="Search for Recepients" />
+                <input type="text" id="table-search" className="block p-2 text-sm text-gray-900  w-full  focus:outline-none" placeholder="Search for recipientss" />
               </div>
             </div>
           </div>
@@ -32,10 +32,10 @@ export default function ListRecepients() {
                         Name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                        Phone
+                        Description
                 </th>
                 <th scope="col" className="px-6 py-3">
-                        Group
+                        Recipients
                 </th>
                 <th scope="col" className="px-6 py-3">
                         Created At
@@ -48,78 +48,74 @@ export default function ListRecepients() {
             <tbody>
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
-              />
-
-              <TableRow
-                index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
               <TableRow
                 index="1"
-                name="Mugisha Eddy"
-                phone="0781732598"
-                group="Edd ENvs"
-                createdAt="01/07/20237"
-
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
               />
-
+              <TableRow
+                index="1"
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
+              />
+              <TableRow
+                index="1"
+                name="Wedding Invitations"
+                description="All recipients who get invited to the wedding"
+                recipients="1202"
+                createdAt="01/07/2023"
+              />
             </tbody>
           </table>
         </div>
@@ -156,7 +152,7 @@ export default function ListRecepients() {
   );
 }
 
-function TableRow({ index, name, phone, group, createdAt } : Recepient) {
+function TableRow({ index, name, description, recipients, createdAt } : Groups) {
   return (
     <tr className="bg-white border-b  hover:bg-gray-50 ">
       <td className="px-6 py-4 text-black">
@@ -166,10 +162,10 @@ function TableRow({ index, name, phone, group, createdAt } : Recepient) {
         {name}
       </th>
       <td className="px-6 py-4 text-black">
-        {phone}
+        {description}
       </td>
       <td className="px-6 py-4 text-black">
-        {group}
+        {recipients}
       </td>
       <td className="px-6 py-4 text-black">
         {createdAt}

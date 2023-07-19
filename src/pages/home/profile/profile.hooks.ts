@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../redux/redux/hooks';
 import api from '../../../utils/axios.config';
-import { useNavigate } from 'react-router-dom';
 
 export type User = {
     firstName: string,
@@ -15,7 +14,6 @@ export const useProfile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState<User | null>(null);
-  const navigate = useNavigate();
   const token = useAppSelector((state) => state.token.value);
   useEffect(() => {
     setLoading(true);
@@ -31,13 +29,12 @@ export const useProfile = () => {
       })
       .catch((err) => {
         setLoading(false);
-        navigate('/login');
         setError(err.response.data.message || err.response.data.error);
         setTimeout(() => {
           setError(null);
         }, 5000);
       });
-  }, [token, navigate]);
+  }, [token]);
 
   return {
     profile,
